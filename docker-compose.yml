@@ -1,0 +1,24 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    networks:
+      - rabbitnet
+  selenium:
+    image: seleniarm/standalone-chromium
+    container_name: selenium
+    ports:
+      - "${SELENIUM_PORT}:${SELENIUM_PORT}"
+    shm_size: 2gb
+    networks:
+      - rabbitnet
+
+networks:
+  rabbitnet:
+    external: true
