@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -10,11 +12,25 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
     networks:
       - rabbitnet
-  selenium:
-    image: seleniarm/standalone-chromium
-    container_name: selenium
+
+  selenium-hub:
+    image: selenium/hub:4.7.2-20221219
+    container_name: selenium-hub
     ports:
-      - "${SELENIUM_PORT}:${SELENIUM_PORT}"
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    networks:
+      - rabbitnet
+
+  chrome-node:
+    build: .
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     shm_size: 2gb
     networks:
       - rabbitnet
@@ -22,3 +38,4 @@ services:
 networks:
   rabbitnet:
     external: true
+
