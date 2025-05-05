@@ -1,6 +1,6 @@
-FROM selenium/node-chrome:4.7.2-20221219
+FROM selenium/node-chrome:latest
 
 USER root
-COPY chromedriver-108.0.5359.71 /opt/selenium/chromedriver-108.0.5359.71
+COPY chromedriver-135.0.7049.84 /opt/selenium/chromedriver-135.0.7049.84
 
-RUN chmod +x /opt/selenium/chromedriver-108.0.5359.71
+RUN chmod +x /opt/selenium/chromedriver-135.0.7049.84
